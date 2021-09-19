@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: monospace;
+}
+
+h1 {
+  color: rebeccapurple;
+  font-weight: 800;
+}
+
+/*# sourceMappingURL=cajaStyles.css.map */
