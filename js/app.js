@@ -1,4 +1,6 @@
 const app = new Vue({
     el: '#app',
-    data: {}
+    data: {
+        title: 'Caja Registradora'
+    }
 })
