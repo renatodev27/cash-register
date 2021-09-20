@@ -40,6 +40,11 @@ const foodItemsComponent = Vue.component('food-items', {
                 { id: 4, description: 'Turkey', type: 'Food', dir: 'src/Products/turkey_burger.jpg', price: 14.5 },
             ],
         }
+    },
+    methods: {
+        sendProductAiData(productos = []) {
+            this.$emit('sendingproducts', productos);
+        }
     }
 })
 
@@ -52,6 +57,11 @@ const alcoholComponent = Vue.component('alcohol-items', {
                 { id: 6, description: 'Wiskey', type: 'Alcohol', dir: 'src/Products/wisky.jpg', price: 25 },
                 { id: 7, description: 'Wine', type: 'Alcohol', dir: 'src/Products/wine.jpg', price: 15 },
             ],
+        }
+    },
+    methods: {
+        sendProductAiData(productos = []) {
+            this.$emit('sendingproducts', productos);
         }
     }
 })
@@ -66,6 +76,11 @@ const colDrinksComponent = Vue.component('cold-drinks', {
                 { id: 10, description: 'Strawberry', type: 'Cold Drink', dir: 'src/Products/strawberry.jpg', price: 18 },
                 { id: 11, description: 'Coke', type: 'Cold Drink', dir: 'src/Products/coke.jpg', price: 4 },
             ],
+        }
+    },
+    methods: {
+        sendProductAiData(productos = []) {
+            this.$emit('sendingproducts', productos);
         }
     }
 })
@@ -82,6 +97,11 @@ const hotDrinksComponent = Vue.component('hot-drinks', {
                 { id: 16, description: 'Infusion', type: 'Hot Drink', dir: 'src/Products/infusion.jpg', price: 2 },
             ],
         }
+    },
+    methods: {
+        sendProductAiData(productos = []) {
+            this.$emit('sendingproducts', productos);
+        }
     }
 })
 
@@ -90,18 +110,65 @@ const app = new Vue({
     data: {   
         addedProducts: []
     },
+    computed: {
+        totalPrice() {
+            let total = 0;
+            this.addedProducts.map( (product) => total += (product.cant * product.price) );
+            return total;
+        }
+    },
     methods: {
+        validateRepeated(id) {
+            let ret = 0;
+            this.addedProducts.map ( (ap) => {if (ap.id === id) ret = true; })
+            return ret;
+        },
         reciveDataProducts(products) {
-            products.map( (product) => {
+
+            if (this.addedProducts.length) {
+                
+                this.addedProducts.map ( (x) => {
+                    if (this.validateRepeated(products.id)) {
+                        if (x.id == products.id) {
+                            x.cant +=1
+                        }
+                    }
+                    else {
+                        this.addedProducts.push({
+                            id : products.id,
+                            description : products.description,
+                            type : products.type,
+                            cant : 1,
+                            price : products.price,
+                            dir: products.dir
+                        });
+                    }
+                })
+            }
+            else {
                 this.addedProducts.push({
-                    id : product.id,
-                    description : product.description,
-                    type : product.type,
+                    id : products.id,
+                    description : products.description,
+                    type : products.type,
                     cant : 1,
-                    price : product.price,
-                    dir: product.dir
+                    price : products.price,
+                    dir: products.dir
                 });
-            })
+            }
+        },
+        addOrDelete(action, prod = [], index) {
+            
+            switch (action) {
+                case 'add' : 
+                    this.addedProducts.map( (ap) => { if (ap.id === prod['id']) ap.cant += 1; })
+                break;
+                case 'rest' : 
+                    this.addedProducts.map( (ap) => { if (ap.id === prod['id']) ap.cant -= 1; })
+                break;
+                case 'delete' :
+                    this.addedProducts.splice(index, 1);
+                break;
+            }
         }
     }
 })

@@ -26,6 +26,22 @@
 .pos-body .left-side .ls-header {
   margin: 10px;
 }
+.pos-body .left-side .ls-header h2 {
+  color: #1a3a7a;
+  font-weight: 650;
+}
+.pos-body .left-side button.add-product-button {
+  background-color: #fd335f;
+  border: 1px solid #fd335f;
+  padding: 3px 20px 6px 20px;
+  color: #fff;
+  font-size: 0.8rem;
+  color: #f7f7f7;
+  font-weight: 500;
+  border-radius: 5px;
+  display: none;
+  transition: all 0.3s;
+}
 .pos-body .left-side .nav {
   margin-top: 20px;
 }
@@ -81,6 +97,15 @@
   transform: scale(1.06);
   border: 1px solid #e43601;
 }
+.pos-body .left-side .card-product-content .product-card:hover .add-product-button {
+  position: absolute;
+  display: block;
+}
+.pos-body .left-side .card-product-content .product-card:hover .product-price {
+  margin-top: -5px;
+  font-size: 1.7rem;
+  transition: all 0.3s;
+}
 .pos-body .left-side .card-product-content .product-card .product-description {
   font-size: 1.2rem;
   font-weight: bold;
@@ -92,8 +117,9 @@
 }
 .pos-body .left-side .card-product-content .product-card .product-price {
   font-size: 1.5rem;
-  color: #e61744;
-  font-weight: 500;
+  color: #e65917;
+  font-weight: 650;
+  margin-top: 20px;
 }
 .pos-body .left-side .card-product-content .product-card .product-image {
   object-fit: cover;
@@ -101,27 +127,17 @@
   width: 65px;
   height: 65px;
   border-radius: 10px;
+  box-shadow: 1px 1px 3px 0 #444444;
 }
 .pos-body .right-side {
   width: 35%;
   background-color: rgba(255, 255, 255, 0.938);
-  position: relative;
-  bottom: 0;
-  overflow-x: hidden;
-  overflow-y: scroll;
   border-left: 1px solid #eef3ffee;
 }
-.pos-body .right-side .rs-header {
-  margin: 10px;
-}
-.pos-body .right-side .rs-header h3 {
-  color: #1a3a7a;
-  font-weight: 700;
-}
-.pos-body .right-side .rs-header button {
+.pos-body .right-side button {
   transition: all 0.3s;
 }
-.pos-body .right-side .rs-header button.clear-order {
+.pos-body .right-side button.clear-order {
   padding: 11px 20px 12px 20px;
   background-color: #fff0f3;
   border-radius: 10px;
@@ -130,24 +146,90 @@
   font-weight: 550;
   font-size: 0.9rem;
 }
-.pos-body .right-side .rs-header button.clear-order:hover {
+.pos-body .right-side button.clear-order:hover {
   background-color: #ffdae2;
 }
-.pos-body .right-side .rs-header button.config-order {
+.pos-body .right-side button.config-order {
   background: #e7efffee;
   border: none;
   padding: 9px 9px 9px 9px;
   margin-left: 5px;
   border-radius: 10px;
 }
-.pos-body .right-side .rs-header button.config-order:hover {
+.pos-body .right-side button.config-order:hover {
   background-color: #cbdcfaee;
 }
-.pos-body .right-side .table-prod-img {
+.pos-body .right-side button.add-del-prod-btn {
+  padding: 7px 9px 7px 9px;
+  border-radius: 10px;
+  background-color: #e7efffee;
+  border: 1px solid #e7efffee;
+}
+.pos-body .right-side button.add-del-prod-btn.trash {
+  background-color: #ff2d62ee;
+  border: 1px solid #ff2d62ee;
+}
+.pos-body .right-side button.payment-cancel {
+  padding: 20px;
+  background-color: #eff4ff;
+  border: 1px solid #eff4ff;
+  border-radius: 10px;
+  color: #1a3a7a;
+  font-weight: 620;
+}
+.pos-body .right-side button.payment-order-button {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #ff7300;
+  background-color: #ff7300;
+  color: #ffffff;
+  padding: 15px;
+  font-weight: 620;
+  margin-bottom: 10px;
+}
+.pos-body .right-side .rs-header {
+  position: absolute;
+  bottom: 0;
+  top: 0.5%;
+  width: 34.9%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.pos-body .right-side .rs-header .row, .pos-body .right-side .rs-header .order-products-content {
+  margin: 5px;
+}
+.pos-body .right-side .rs-header .row .cant-text, .pos-body .right-side .rs-header .order-products-content .cant-text {
+  text-align: center;
+  font-weight: bold;
+  margin: 0 7px 0 7px;
+}
+.pos-body .right-side .rs-header .row .table-prod-img, .pos-body .right-side .rs-header .order-products-content .table-prod-img {
   object-fit: cover;
   object-position: center;
   width: 50px;
   height: 50px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px 0 #444444;
+}
+.pos-body .right-side .rs-header h3 {
+  color: #1a3a7a;
+  font-weight: 700;
+}
+.pos-body .right-side .rs-header .order-payment-info .card-taxes {
+  box-shadow: 0 9px 25px -7px #c9c8c8;
+  border-radius: 10px;
+  padding: 5px 15px 5px 15px;
+}
+.pos-body .right-side .rs-header .order-payment-info .card-cashless-credit {
+  box-shadow: 0 9px 25px -7px #c9c8c8;
+  border-radius: 10px;
+  padding: 5px 15px 5px 15px;
+}
+.pos-body .right-side .rs-header .order-payment-info .card-cashless-credit .cashless-credit-payment {
+  color: #e65917;
+  font-size: 2.4rem;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 h1 {

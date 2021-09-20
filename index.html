@@ -13,7 +13,7 @@
         <div class="pos-body">
             <div class="left-side">
                 <div class="ls-header">
-                    <h3 class="mb-0">Mi tienda Online</h3>
+                    <h2 class="mb-0">POINT OF SELL (POS) - <span class="text-muted font-weight-light">My Store</span> </h2>
                     <h6 class="text-muted">Location ID#iss252</h6>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <button class="nav-link active" id="nav-allitems-tab" data-bs-toggle="tab" data-bs-target="#nav-allitems" type="button" role="tab" aria-controls="nav-allitems" aria-selected="true">All items</button>
@@ -27,16 +27,16 @@
                             <all-items v-on:sendingproducts="reciveDataProducts"></all-items>
                         </div>
                         <div class="tab-pane fade" id="nav-food" role="tabpanel">
-                            <food-items></food-items>
+                            <food-items v-on:sendingproducts="reciveDataProducts"></food-items>
                         </div>
                         <div class="tab-pane fade" id="nav-alcohol" role="tabpanel">
-                            <alcohol-items></alcohol-items>
+                            <alcohol-items v-on:sendingproducts="reciveDataProducts"></alcohol-items>
                         </div>
                         <div class="tab-pane fade" id="nav-coldrink" role="tabpanel">
-                            <cold-drinks></cold-drinks>
+                            <cold-drinks v-on:sendingproducts="reciveDataProducts"></cold-drinks>
                         </div>
                         <div class="tab-pane fade" id="nav-hotdrink" role="tabpanel">
-                            <hot-drinks></hot-drinks>
+                            <hot-drinks v-on:sendingproducts="reciveDataProducts"></hot-drinks>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                             <h3 class="my-2">Current Order</h3>
                         </div>
                         <div class="col-md-6" align="right">
-                            <button class="clear-order">Clear All</button>
+                            <button class="clear-order" @click="addedProducts = []">Clear All</button>
                             <button class="config-order">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="25" height="25" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -74,46 +74,91 @@
                             </div>
                         </div>
                         <div v-else>
-                            <table class="table table-borderless">
-                                <tbody>
-                                    <tr v-for="prod in addedProducts">
-                                        <td class="align-middle" width="10%">
-                                            <img :src="prod.dir" class="table-prod-img">
-                                        </td>
-                                        <td class="align-middle">
-                                            <h6 class="mb-0 font-weight-bold" v-text="prod.description"></h6>
-                                        </td>
-                                        <td class="align-middle" align="center">
-                                            <button :class="(prod.cant == 1) ? 'add-prod-btn trash' : 'add-prod-btn'">
-                                                <div v-if="prod.cant == 1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="25" height="25" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                        <line x1="4" y1="7" x2="20" y2="7" />
-                                                        <line x1="10" y1="11" x2="10" y2="17" />
-                                                        <line x1="14" y1="11" x2="14" y2="17" />
-                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                                    </svg>
-                                                </div>
-                                                <div v-else>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="25" height="25" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <div class="order-table">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr v-for="(prod, index) in addedProducts">
+                                            <td class="align-middle" width="10%">
+                                                <img :src="prod.dir" class="table-prod-img">
+                                            </td>
+                                            <td class="align-middle" width="28%">
+                                                <h6 class="mb-0 font-weight-bold" v-text="prod.description"></h6>
+                                            </td>
+                                            <td class="align-middle" align="center">
+                                                <button :class="(prod.cant == 1) ? 'add-del-prod-btn trash' : 'add-del-prod-btn'" @click="(prod.cant > 1) ? addOrDelete('rest', prod) : addOrDelete('delete', prod, index)">
+                                                    <div v-if="prod.cant == 1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="25" height="25" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                            <line x1="4" y1="7" x2="20" y2="7" />
+                                                            <line x1="10" y1="11" x2="10" y2="17" />
+                                                            <line x1="14" y1="11" x2="14" y2="17" />
+                                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                        </svg>
+                                                    </div>
+                                                    <div v-else>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-minus" width="25" height="25" viewBox="0 0 24 24" stroke-width="1.5" stroke="#242424" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                            <line x1="5" y1="12" x2="19" y2="12" />
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                <b class="cant-text" v-text="prod.cant"></b>
+                                                <button class="add-del-prod-btn" @click="addOrDelete('add', prod)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="25" height="25" viewBox="0 0 24 24" stroke-width="1.5" stroke="#242424" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                                         <line x1="12" y1="5" x2="12" y2="19" />
                                                         <line x1="5" y1="12" x2="19" y2="12" />
                                                     </svg>
-                                                </div>
-                                            </button>
-                                            <span v-text="prod.cant"></span>
-                                            <button>
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-minus" width="25" height="25" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                    <line x1="5" y1="12" x2="19" y2="12" />
-                                                </svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                                </button>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <h5 class="font-weight-bold mb-0 table-product-price" v-text="'$' + (prod.price * prod.cant)"></h5>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="order-payment-info">
+                                <div class="card-taxes">
+                                    <table class="table table-borderless table-sm">
+                                        <tr>
+                                            <td>Subtotal</td>
+                                            <th class="text-end"> <span v-text="'$' + totalPrice"></span> </th>
+                                        </tr>
+                                        <tr>
+                                            <td>Discounts</td>
+                                            <th class="text-end"> <span v-text="'$0'"></span> </th>
+                                        </tr>
+                                        <tr>
+                                            <td>Sales Tax</td>
+                                            <th class="text-end"> <span v-text="'$0'"></span> </th>
+                                        </tr>
+                                    </table>
+                                    <hr>
+                                    <table class="table table-borderless table-sm">
+                                        <tr>
+                                            <td>Total</td>
+                                            <th class="text-end"> <h5 class="mb-0 font-weight-bold" v-text="(totalPrice > 0) ? '$' + totalPrice : $0"></h5> </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="card-cashless-credit mt-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6 class="mb-0">CASHLESS CREDIT</h6>
+                                            <label class="mb-0 cashless-credit-payment" v-text="'$' + totalPrice"></label>
+                                            <label class="small text-muted mt-0">Avaliable</label>
+                                        </div>
+                                        <div class="col-md-6" align="right">
+                                            <button class="payment-cancel">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="mt-4 payment-order-button">
+                                    <span>Pay With Cashless Credit</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -125,12 +170,13 @@
         <div class="card-product-content">
             <div class="row">
                 <div class="col-md-4" v-for="product in productList">
-                    <div class="product-card" @click="sendProductAiData(product)">
+                    <div class="product-card">
                         <div class="product-description" v-text="product.description"></div>
                         <div class="product-type" v-text="product.type"></div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="product-price mt-3" v-text="'$' + product.price"></div>
+                                <div class="product-price" v-text="'$' + product.price"></div>
+                                <button class="add-product-button hovered" @click="sendProductAiData(product)">Agregar</button>
                             </div>
                             <div class="col-md-6" align="right">
                                 <img class="product-image" :src="product.dir"></img>
@@ -151,7 +197,8 @@
                         <div class="product-type" v-text="product.type"></div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="product-price mt-3" v-text="'$' + product.price"></div>
+                                <div class="product-price" v-text="'$' + product.price"></div>
+                                <button class="add-product-button hovered" @click="sendProductAiData(product)">Agregar</button>
                             </div>
                             <div class="col-md-6" align="right">
                                 <img class="product-image" :src="product.dir"></img>
@@ -172,7 +219,8 @@
                         <div class="product-type" v-text="product.type"></div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="product-price mt-3" v-text="'$' + product.price"></div>
+                                <div class="product-price" v-text="'$' + product.price"></div>
+                                <button class="add-product-button hovered" @click="sendProductAiData(product)">Agregar</button>
                             </div>
                             <div class="col-md-6" align="right">
                                 <img class="product-image" :src="product.dir"></img>
@@ -193,7 +241,8 @@
                         <div class="product-type" v-text="product.type"></div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="product-price mt-3" v-text="'$' + product.price"></div>
+                                <div class="product-price" v-text="'$' + product.price"></div>
+                                <button class="add-product-button hovered" @click="sendProductAiData(product)">Agregar</button>
                             </div>
                             <div class="col-md-6" align="right">
                                 <img class="product-image" :src="product.dir"></img>
@@ -214,7 +263,8 @@
                         <div class="product-type" v-text="product.type"></div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="product-price mt-3" v-text="'$' + product.price"></div>
+                                <div class="product-price" v-text="'$' + product.price"></div>
+                                <button class="add-product-button hovered" @click="sendProductAiData(product)">Agregar</button>
                             </div>
                             <div class="col-md-6" align="right">
                                 <img class="product-image" :src="product.dir"></img>
