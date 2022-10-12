@@ -45,4 +45,4 @@ NOTE: If you add an added item to the shopping cart, it will sum the quantities 
 
 Renato Ramos Paretto - renatoramos.devops@gmail.com - rantopthetop93@gmail.com
 
-Project Link : https://github.com/renatodev27/Caja_registradora.git
+Project Link : https://github.com/renatodev27/cash-register.git
